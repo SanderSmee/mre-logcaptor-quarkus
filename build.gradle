@@ -14,6 +14,9 @@ dependencies {
     implementation 'io.quarkus:quarkus-resteasy'
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
+
+    // 1. L:ogCaptor dependency
+    testImplementation 'io.github.hakky54:logcaptor:2.7.8'
 }
 
 group 'org.acme'
@@ -31,4 +34,13 @@ compileJava {
 
 compileTestJava {
     options.encoding = 'UTF-8'
+}
+
+
+configurations {
+    // 2. Exclusion of the logging framework that conflicts with provided logback
+    // as documented https://github.com/Hakky54/log-captor#using-log-captor-alongside-with-other-logging-libraries
+    testImplementation {
+        exclude group: "org.jboss.slf4j", module: "slf4j-jboss-logmanager"
+    }
 }
